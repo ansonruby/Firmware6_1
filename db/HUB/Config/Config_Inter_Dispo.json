@@ -1,0 +1,41 @@
+{
+  "Config_Tipo_Dispo":{
+    "HUB":{
+            "Modulo_Serial"         :"True",
+            "Modulo_Procesamiento"  :"True",
+            "Modulo_Validacion"     :"True",
+            "Modulo_Respuesta"      :"True",
+            "Rele"                  :"True"
+          },
+    "CAT_Lectora":{
+            "Teclado"               :"True",
+            "Buzzer"                :"True",
+            "Power_IR"              :"True",
+            "Led"                   :"True",
+            "Modulo_Respuesta"      :"True",
+            "Rele"                  :"True"
+          },
+    "CAT_HUB":{
+            "Modulo_Serial"         :"True",
+            "Modulo_Procesamiento"  :"True",
+            "Modulo_Validacion"     :"True",
+            "Modulo_Respuesta"      :"True",
+            "Rele"                  :"True",
+            "Teclado"               :"True",
+            "Buzzer"                :"True",
+            "Power_IR"              :"True",
+            "Led"                   :"True",
+          }
+  },
+  "Crontap":{
+    "Teclado"             :"@reboot (sleep 35; /home/pi/Firmware/sh/app_30_sleep.sh) # Teclado",
+    "Buzzer"              :"@reboot (sleep 20; python /home/pi/Firmware/app/Act_Buzzer.py) # Buzzer",
+    "Power_IR"            :"@reboot (sleep 10; python /home/pi/Firmware/app/Act_Power_IR.py) # Power_IR",
+    "Led"                 :"@reboot (sleep 10; sudo python3.5 /home/pi/Firmware/app/Act_Led_RGB.py) # Led",
+    "Rele"                :"@reboot (sleep 10; python /home/pi/Firmware/app/Act_Rele.py) # Rele",
+    "Modulo_Serial"       :"@reboot (sleep 20; python /home/pi/Firmware/app/Mod_Serial.py) # Modulo Serial",
+    "Modulo_Procesamiento":"@reboot (sleep 20; python /home/pi/Firmware/app/Mod_Procesamiento.py) # Modulo Procesamiento",
+    "Modulo_Validacion"   :"@reboot (sleep 20; python /home/pi/Firmware/app/Mod_Validacion.py) # Modulo Validacion",
+    "Modulo_Respuesta"    :"@reboot (sleep 20; python /home/pi/Firmware/app/Mod_Respuesta.py) # Modulo Respuesta"
+  }
+}
