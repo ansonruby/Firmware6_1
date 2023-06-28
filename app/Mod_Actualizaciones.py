@@ -294,57 +294,31 @@ def Actualizar_Inicio_Usuarios():
 
 #---------------------------------------------------------
 def Actualizacion_Lokers():
-    #print Get_ID_Dispositivo()
-    #Data_Autorizados={}
-    #Data_Location={}
-    #Data_Autorizados['hola']=[10,11]   #funciona
-    #Data_Location['S0'] = Data_Autorizados
-    #print Data_Location
-    #print Data_Autorizados
-    Datos = {"location_lockers": [169, 170,171]}
-    print Datos["location_lockers"]
 
-    Data_Autorizados={}
-    #---- estados actuales de los lockers
-    path = os.path.join(S0, NEW_TAB_STATUS_TIPO_9)
-    Status_Lokers = Get_File_Json(path)
-    print Status_Lokers
-
-    for Loker in Datos["location_lockers"]:
-        print Loker
-        try:
-            Estados_lockers=Status_Lokers[str(Loker)]
-            print Estados_lockers
-            Data_Autorizados[str(Loker)]=Estados_lockers#[10,11]
-            #Data_loker_status.append(str(Loker):Status_Lokers[Loker])
-            #Data_loker_status.append(str(Loker)+':')
-        except Exception as e:
-            print 'mm'
-    print Data_Autorizados
-
-    """
-    Datos = {"location_lockers": [169, 170]}
-    print Datos
-    print Datos["location_lockers"]
-
-    path = os.path.join(S0, NEW_TAB_STATUS_TIPO_9)
-    Status_Lokers = Get_File_Json(path)
-    print Status_Lokers
-    #New_loker={}
+    Data_sen = send_petition("get_lokers")
+    if Data_sen != False and Data_sen.ok:
+        Datos = Data_sen.json()
+        Data_Autorizados={}
+        #---- estados actuales de los lockers
+        path = os.path.join(S0, NEW_TAB_STATUS_TIPO_9)
+        Status_Lokers = Get_File_Json(path)
+        #print Status_Lokers
+        contador=0
+        for Loker in Datos["location_lockers"]:
+            #print Loker
+            try:
+                Estados_lockers=Status_Lokers[str(Loker)]
+                Data_Autorizados[str(Loker)]=[contador,Estados_lockers[1]]#[10,11]
+                contador= contador + 1
+            except Exception as e:
+                #print 'mm'
+                Data_Autorizados[str(Loker)]=[contador,0]
+                contador= contador + 1
+        #print Data_Autorizados
+        # Actualizacion de lockers
+        Set_File_Json(path, Data_Autorizados)
 
 
-    Data_loker_status=[]
-    for Loker in Datos["location_lockers"]:
-        print Loker
-        try:
-            print str(Loker)+':' , Status_Lokers[Loker]
-            #Data_loker_status.append(str(Loker):Status_Lokers[Loker])
-            #Data_loker_status.append(str(Loker)+':')
-        except Exception as e:
-            print 'mm'
-
-    print Data_loker_status
-    """
     """
     Data_sen = send_petition("get_lokers")
     if Data_sen != False and Data_sen.ok:

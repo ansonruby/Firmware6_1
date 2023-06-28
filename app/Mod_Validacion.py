@@ -60,7 +60,7 @@ def Validar_QR_Antiguo(access_data, tipo_acceso, medio_acceso, lectora):
 def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
     print access_data
     #print medio_acceso
-    Lokers = Get_File_Json(os.path.join(S0, NEW_TAB_USER_TIPO_9))
+    #Lokers = Get_File_Json(os.path.join(S0, NEW_TAB_USER_TIPO_9))
     #print Lokers
     Estados = Get_File_Json( os.path.join(S0, NEW_TAB_STATUS_TIPO_9) )
     #print Estados
@@ -100,7 +100,7 @@ def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
     if B_estado== 1:
         print 'actualizar lokers'
         Set_File_Json( os.path.join(S0, NEW_TAB_STATUS_TIPO_9), Estados)
-        
+
 
 
 
