@@ -24,7 +24,7 @@
             "Teclado"               :"True",
             "Buzzer"                :"True",
             "Power_IR"              :"True",
-            "Led"                   :"True",
+            "Led"                   :"True"
           }
   },
   "Crontap":{

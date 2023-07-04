@@ -1,40 +1,44 @@
 from actioncable.connection import Connection
 from actioncable.subscription import Subscription
 from actioncable.message import Message
-
-import time
-import os
+from lib.Lib_Settings import Get_Rout_server
+from lib.Fun_Dispositivo import Get_ID_Dispositivo
 
 
 class WebSocketFuseaccess():
-    
-    ws_url='ws://192.168.0.30:3000/cable'
-    uuid="1234"
 
-    def create_connection(url,uuid,receiver):
-        connection = Connection(url=url)
+    def __init__(self):
+        url = Get_Rout_server()
+        ws_url = url.replace("http", "ws", 1) + "/cable"
+        self.ws_url = ws_url
+        self.uuid = Get_ID_Dispositivo()
+
+    def create_connection(self):
+        connection = Connection(url=self.ws_url)
         connection.connect()
 
-        subscription = Subscription(connection, 
-            identifier={'channel':'SpeakerNotificationsChannel','uuid':uuid}
-        )
+        subscription = Subscription(connection,
+                                    identifier={
+                                        'channel': 'SpeakerNotificationsChannel', 'uuid': self.uuid}
+                                    )
 
-        subscription.on_receive(callback=receiver)
+        subscription.on_receive(callback=self.on_message)
         subscription.create()
-        return connection,subscription
+        self.connection = connection
+        self.subscription = subscription
 
-    def close_connection(connection,subscription):
-        subscription.remove()
-        connection.disconnect()
+    def close_connection(self):
+        if self.connection and self.subscription:
+            self.subscription.remove()
+            self.connection.disconnect()
+            self.subscription = None
+            self.connection = None
 
-    def on_msg(msg):
-        print(msg)
-        mytext =  msg['message']
-        language = 'es'
-        tld='com.mx'
-        myobj = gTTS(text=mytext, lang=language,tld=tld, slow=False)
-        file_name="tmp/voz_"+str(int(time.time()))+".mp3"
-        myobj.save(file_name)
-        os.system("cvlc --play-and-exit "+file_name )
-        os.remove(file_name)
+    def send_message(self, action, data):
+        if self.connection and self.subscription:
+            message = Message(action=action, data=data)
+            self.subscription.send(message)
+            return True
 
+    def on_message(self, msg):
+        pass
