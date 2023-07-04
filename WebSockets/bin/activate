@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/fs20162/Documents/Lud/FuseSolutions/Firmware6_1/WebSockets"
+VIRTUAL_ENV="/home/pi/Firmware/WebSockets"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
