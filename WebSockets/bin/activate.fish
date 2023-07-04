@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/fs20162/Documents/Lud/FuseSolutions/Firmware6_1/WebSockets"
+set -gx VIRTUAL_ENV "/home/pi/Firmware/WebSockets"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

@@ -1,4 +1,4 @@
-#!/home/fs20162/Documents/Lud/FuseSolutions/Firmware6_1/WebSockets/bin/python3
+#!/home/pi/Firmware/WebSockets/bin/python3
 
 # -*- coding: utf-8 -*-
 import re
