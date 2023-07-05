@@ -11,6 +11,14 @@ def Get_Pat_Server():
     return data["HUB"]["Ser_Dominio"], data["HUB"]["Ser_Ip"], data["HUB"]["Mejor_Coneccion"]
 
 
+def Get_Mod_Speaker():
+    file = open(CURRENT_DIR_PATH+"/../../../db/HUB/Config/Config.json")
+    data = json.load(file)
+    file.close()
+    if "Mod_Speaker" in data:
+        return data["Mod_Speaker"]
+    return {}
+
 def Get_Rout_server():
     Domi_Ser, IP_Ser, mejor_opcion = Get_Pat_Server()
 

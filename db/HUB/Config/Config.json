@@ -45,6 +45,10 @@
         {
             "Configuracion_Acceso": "Acceso dinamico"
         },
+    "Mod_Speaker":
+        {
+            "Tiempo_Reset_WS": "120"
+        },
     "Reles": [
         {
             "Locacion": "S0",
