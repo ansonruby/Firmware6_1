@@ -364,7 +364,7 @@ def Open_Lokers():
 
         ####--------------------------------------------------------
         try:
-            Datos["sos"]
+            Datos["active_sos"]
             Datos["lockers_to_open"]
             #--------Logica loker sos pero ya no llegada
             Bandera_actualizacion_db=0
@@ -374,7 +374,7 @@ def Open_Lokers():
                     Status_Loker = Estados[1]
                     if Status_Loker == 2:
                         B_Termono_SOS=0
-                        for Loker_SOS in Datos["sos"]:
+                        for Loker_SOS in Datos["active_sos"]:
                             if str(Loker) == str(Loker_SOS):    B_Termono_SOS=1
                         if B_Termono_SOS == 0:
                             if MA_Mensajes: print 'Finaliso SOS loker: ', Loker
