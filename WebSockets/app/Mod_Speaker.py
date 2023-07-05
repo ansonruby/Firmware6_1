@@ -14,7 +14,6 @@ CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 class WSSpeaker(WebSocketFuseaccess):
     def on_message(self, msg):
-        print(msg)
         mytext = msg['message']
         language = 'es'
         tld = 'com.mx'
@@ -24,7 +23,8 @@ class WSSpeaker(WebSocketFuseaccess):
             os.makedirs(tmp_path)
         file_name = tmp_path+"/voz_"+str(int(time.time()*1000))+".mp3"
         myobj.save(file_name)
-        subprocess.run(["cvlc", "--play-and-exit", file_name])
+        subprocess.call(["cvlc", "--play-and-exit", file_name],
+                        stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
         os.remove(file_name)
 
 
