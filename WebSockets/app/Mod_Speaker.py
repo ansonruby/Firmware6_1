@@ -1,6 +1,6 @@
 from lib.Lib_WS import WebSocketFuseaccess
 from gtts import gTTS
-from playsound import playsound
+import subprocess
 import time
 import os
 
@@ -19,7 +19,7 @@ class WSSpeaker(WebSocketFuseaccess):
             os.makedirs(tmp_path)
         file_name = tmp_path+"/voz_"+str(int(time.time()*1000))+".mp3"
         myobj.save(file_name)
-        playsound(file_name)
+        subprocess.run(["cvlc","--play-and-exit",file_name])
         os.remove(file_name)
 
 
