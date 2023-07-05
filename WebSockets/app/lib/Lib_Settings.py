@@ -40,5 +40,5 @@ def Get_Rout_server():
                 '1111': 'https://' + IP_Ser}
 
     # return 'https://solutions.fusepong.com'
-    return 'http://192.168.0.30:3000'
+    # return 'http://192.168.0.30:3000'
     return opciones[mejor_opcion]
