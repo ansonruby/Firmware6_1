@@ -339,32 +339,105 @@ def Hora_Actualizacion_Lokers(Hora_Actualizacion):
         Actualizacion_Lokers()
 #---------------------------------------------------------
 def Open_Lokers():
+
+    """
+    Datos ={"lockers_to_open":  [1,2,3], "sos": [169,5]}
+    #print Datos
+    print Datos['sos']
+
+    path = os.path.join(S0, NEW_TAB_STATUS_TIPO_9)
+    Status_Lokers = Get_File_Json(path)
+
+    print Status_Lokers
+    """
+
+    # ----------------- Logica para loker con sos fin
+
+
     Data_sen = send_petition("lokers_open")
     if Data_sen != False and Data_sen.ok:
         Datos = Data_sen.json()
         path = os.path.join(S0, NEW_TAB_STATUS_TIPO_9)
         Status_Lokers = Get_File_Json(path)
         B_estado=0
-        for Loker in Datos["lockers_to_open"]:
-            try:
-                Estados = Status_Lokers[str(Loker)]
-                Numero_Loker = Estados[0]
-                Status_Loker = Estados[1]
-                if Status_Loker == 0:
-                    comand_res = [
-                        COM_RES,
-                        COM_RES_S1,
-                        COM_RES_S2
-                    ]
-                    #cambiar el estado
-                    Status_Lokers[str(Loker)][1]=1 # cambio de Estado del loker
-                    B_estado=1
-                    if MA_Mensajes: print os.path.join(FIRM, HUB,comand_res[Numero_Loker])
-                    Set_File(os.path.join(FIRM, HUB,comand_res[Numero_Loker]), "Access granted-E")
-            except Exception as e:
-                if MA_Mensajes: print 'NO existe'
-        #actualizar estados de los lokes si hay cambio
-        if B_estado== 1:    Set_File_Json(path, Status_Lokers)
+        if MA_Mensajes: print 'Datos Servidor: ', Datos
+
+        ####--------------------------------------------------------
+        try:
+            Datos["sos"]
+            Datos["lockers_to_open"]
+            #--------Logica loker sos pero ya no llegada
+            Bandera_actualizacion_db=0
+            for Loker in Status_Lokers.keys():
+                try:
+                    Estados = Status_Lokers[str(Loker)]
+                    Status_Loker = Estados[1]
+                    if Status_Loker == 2:
+                        B_Termono_SOS=0
+                        for Loker_SOS in Datos["sos"]:
+                            if str(Loker) == str(Loker_SOS):    B_Termono_SOS=1
+                        if B_Termono_SOS == 0:
+                            if MA_Mensajes: print 'Finaliso SOS loker: ', Loker
+                            Status_Lokers[str(Loker)][1]= 0 # cambio de Estado a SOS
+                            Bandera_actualizacion_db = 1
+
+                except Exception as e:
+                    if MA_Mensajes: print 'NO existe'
+
+            #print Status_Lokers
+            if Bandera_actualizacion_db == 1:   Set_File_Json(path, Status_Lokers)
+
+            # ----------------- Logica para loker con sos en el registro de llegada
+            Bandera_actualizacion_db=0
+            for Loker_SOS in Datos["sos"]:
+                try:
+                    Estados = Status_Lokers[str(Loker_SOS)]
+                    Numero_Loker = Estados[0]
+                    Status_Loker = Estados[1]
+                    print Loker_SOS, 'Estados:' , Status_Loker
+
+                    if Status_Loker == 1:
+                        Bandera_actualizacion_db=1
+                        Status_Lokers[str(Loker_SOS)][1]= 2 # cambio de Estado a SOS
+                        if MA_Mensajes: print 'SOS abrir loker: ', Loker_SOS
+                        comand_res = [
+                            COM_RES,
+                            COM_RES_S1,
+                            COM_RES_S2
+                        ]
+                        Set_File(os.path.join(FIRM, HUB,comand_res[Numero_Loker]), "Access granted-E")
+
+                except Exception as e:
+                    if MA_Mensajes: print 'NO existe'
+
+            print Status_Lokers
+            if Bandera_actualizacion_db == 1:   Set_File_Json(path, Status_Lokers)
+
+            ####--------------------------------------------------------
+
+            for Loker in Datos["lockers_to_open"]:
+                try:
+                    Estados = Status_Lokers[str(Loker)]
+                    Numero_Loker = Estados[0]
+                    Status_Loker = Estados[1]
+                    if Status_Loker == 0:
+                        comand_res = [
+                            COM_RES,
+                            COM_RES_S1,
+                            COM_RES_S2
+                        ]
+                        #cambiar el estado
+                        Status_Lokers[str(Loker)][1]=1 # cambio de Estado del loker
+                        B_estado=1
+                        if MA_Mensajes: print os.path.join(FIRM, HUB,comand_res[Numero_Loker])
+                        Set_File(os.path.join(FIRM, HUB,comand_res[Numero_Loker]), "Access granted-E")
+                except Exception as e:
+                    if MA_Mensajes: print 'NO existe'
+            #actualizar estados de los lokes si hay cambio
+            if B_estado== 1:    Set_File_Json(path, Status_Lokers)
+        except Exception as e:
+            if MA_Mensajes: print 'Error en el Json'
+
 #---------------------------------------------------------
 def Periodo_Open_Lokers(Periodo):
     global T_Antes_Periodo_Open_Lokers
@@ -418,6 +491,7 @@ if __name__ == '__main__':
     if MA_Mensajes: print Hora_Actual()
     #if Bandera_Inicio_Usuario: Actualizar_Inicio_Usuarios()
     Actualizacion_Lokers()
+    #Open_Lokers()
 
 
     while 1:
