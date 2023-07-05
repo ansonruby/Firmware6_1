@@ -32,5 +32,5 @@ ws = WSSpeaker()
 
 while True:
     ws.create_connection()
-    time.sleep(CONFIG_SPEAKER["Tiempo_Reset_WS"])
+    time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
     ws.close_connection()
