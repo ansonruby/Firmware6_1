@@ -1,3 +1,4 @@
+from lib.Fun_Dispositivo import Get_ID_Dispositivo
 from lib.Lib_WS import WebSocketFuseaccess
 from gtts import gTTS
 import subprocess
@@ -29,6 +30,6 @@ while True:
     ws.create_connection()
     time.sleep(1*1)
     ws.send_message(
-        "recive_data", {"uuid": "a0c58953859a", "message": "ayyy migue e e el"})
+        "recive_data", {"uuid": Get_ID_Dispositivo(), "message": "ayyy migue e e el"})
     time.sleep(1*60)
     ws.close_connection()
