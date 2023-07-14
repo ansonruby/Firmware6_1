@@ -15,23 +15,23 @@ def Filtro_Tipos_QR_Antiguo(access_code, medio_acceso=1, lectora=0):
     for access_text in access_list:
         access_data = access_text.split(".")
         tipo_acceso = False
-        #Tipo 9. loker        
-        if (len(access_data) == 4 or len(access_data) == 5 ) and access_data[0] == "9":
-            tipo_acceso = 9
 
+        #Tipo 9. loker
+        if (len(access_data) == 4 or len(access_data) == 5 ) and access_data[0] == "9":
+            #print access_data
+            tipo_acceso = 9
         # Tipo 1 0 2 o 5: LLave de acceso o Reserva general con QR o Llave empleado
         elif len(access_data) == 2:
             tipo_acceso = 1
-
         # Tipo 3: Invitacion de unico uso
         elif len(access_data) == 5 and access_data[0] == "3":
             tipo_acceso = 3
-
         # Tipo 4: Invitacion de multipes uso
         elif len(access_data) == 5:
             tipo_acceso = 4
 
         if tipo_acceso:
+            #print tipo_acceso
             Validar_QR_Antiguo(
                 access_data, tipo_acceso, medio_acceso, lectora)
         else:
