@@ -81,7 +81,7 @@ def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
             #Estados = Status_Lokers[str(Loker)]
             Numero_Loker = open_loker_retiro[0]
             Status_Loker = open_loker_retiro[1]
-            if Status_Loker == 1: or Status_Loker == 2:
+            if Status_Loker == 1 or Status_Loker == 2:
                 #print Status_Loker, Numero_Loker
                 #print Estados[str(access_data[3])][1]
                 Estados[str(access_data[3])][1] = 0
@@ -125,8 +125,8 @@ def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
                 Set_File(os.path.join(FIRM, HUB, comand_res[Numero_Loker]), "Access granted-S") # para dos puertas en el locker
                 #guardar registro para enviar
                 #print os.path.join(S0, NEW_TAB_Set_server_TIPO_9 )
-                data_add = access_data[0] + '.' + access_data[1] + '.' + access_data[2] + '.' + access_data[3] + '.'+ str(int(time.time()*1000.0))+'.'+'0.1\n'
-                #print data_add
+                data_add = '.'.join(access_data)+'.'+ str(int(time.time()*1000.0))+'.'+'0.1\n'
+                print data_add
                 Add_File(os.path.join(S0, NEW_TAB_Set_server_TIPO_9 ), data_add)
 
 
