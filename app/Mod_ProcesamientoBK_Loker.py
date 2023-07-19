@@ -43,7 +43,6 @@ def Filtro_Tipos_QR_Antiguo(access_code, medio_acceso=1, lectora=0):
             }, lectora)
             break
 
-
 def Filtro_Tipos_Acceso(access_code, medio_acceso, lectora):
     tipo_acceso = None
     try:
@@ -86,30 +85,25 @@ def Filtro_Tipos_Acceso(access_code, medio_acceso, lectora):
             "reader": lectora
         }, lectora)
 
-
 def Recibir_Codigo_Accesso():
-
     # Medio de acceso 1:QR
     qr_read_paths = [
         (STATUS_QR, COM_QR),
         (STATUS_QR_S1, COM_QR_S1),
         (STATUS_QR_S2, COM_QR_S2)
     ]
-
     # Medio de acceso 2:PIN
     keyboard_read_paths = [
         (STATUS_TECLADO, COM_TECLADO),
         (STATUS_TECLADO_S1, COM_TECLADO_S1),
         (STATUS_TECLADO_S2, COM_TECLADO_S2)
     ]
-
     # Medio de acceso 5-11:NFC
     nfc_read_paths = [
         (STATUS_NFC, COM_NFC),
         (STATUS_NFC_S1, COM_NFC_S1),
         (STATUS_NFC_S2, COM_NFC_S2)
     ]
-
     read_paths = {}
     if "Lectura_QR" in Configs and str(Configs["Lectura_QR"]).lower() == "true":
         read_paths["1"] = qr_read_paths
@@ -124,7 +118,6 @@ def Recibir_Codigo_Accesso():
                 Create_Thread_Daemon(Filtro_Tipos_Acceso,
                                      Get_File(os.path.join(FIRM, HUB, command)), int(medium), lectora)
                 Clear_File(os.path.join(FIRM, HUB, status))
-
 
 while True:
     sleep_time = 0.5 if not "Time_Sleep_Mod" in Configs else float(
