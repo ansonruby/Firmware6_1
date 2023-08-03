@@ -5,8 +5,8 @@
     },
     "HUB": {
         "Mejor_Coneccion": "1011",
-        "Ser_Dominio": "staging.fusepong.com",
-        "Ser_Ip": "35.88.204.191",
+        "Ser_Dominio": "192.168.0.3:4000",
+        "Ser_Ip": "192.168.0.3:4000",
         "Zona": "America/Bogota"
     },
     "Lectoras": [
@@ -44,6 +44,10 @@
     "Mod_Validacion":
         {
             "Configuracion_Acceso": "Acceso dinamico"
+        },
+    "Mod_Speaker":
+        {
+            "Tiempo_Reset_WS": "3600"
         },
     "Reles": [
         {

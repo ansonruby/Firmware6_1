@@ -8,7 +8,7 @@ import os
 CONFIG_SPEAKER = Get_Mod_Speaker()
 if not "Tiempo_Reset_WS" in CONFIG_SPEAKER:
     CONFIG_SPEAKER["Tiempo_Reset_WS"] = "120"
-print(CONFIG_SPEAKER["Tiempo_Reset_WS"])
+
 
 CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -32,7 +32,6 @@ class WSSpeaker(WebSocketFuseaccess):
 ws = WSSpeaker()
 
 while True:
-    print("otra vez")
     ws.create_connection()
     time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
     ws.close_connection()
