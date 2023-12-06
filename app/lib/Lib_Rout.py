@@ -276,9 +276,11 @@ NEW_TAB_USER_TIPO_5     = NEW_DATA + 'Tipo_5.txt'                     # Usuarios
 NEW_TAB_USER_TIPO_6     = NEW_DATA + 'Tipo_6.txt'                     # Usuarios del servidor o counter
 NEW_TAB_USER_TIPO_7     = NEW_DATA + 'Tipo_7.txt'                     # Usuarios del servidor o counter
 NEW_TAB_USER_TIPO_8     = NEW_DATA + 'Tipo_8.txt'                     # Usuarios del servidor o counter
-NEW_TAB_USER_TIPO_9     = NEW_DATA + 'Tipo_9.txt'                     # lokers actualizados
-NEW_TAB_STATUS_TIPO_9    = NEW_DATA + 'Status_9.txt'                  # lokers  stados
-NEW_TAB_Set_server_TIPO_9 = NEW_DATA + 'Set_server_9.txt'                  # lokers  stados
+#           rutas para el manejo de lokers
+NEW_LOCKER              = DATA + 'NewLocker/'                         # Ruta para lockers
+
+NEW_TAB_STATUS_TIPO_9    = NEW_LOCKER + 'Status_9.txt'                # lokers  stados
+NEW_TAB_Set_server_TIPO_9 = NEW_LOCKER + 'Set_server_9.txt'           # lokers  stados
 
                                                      # Ruta      Base de datos
 NEW_AUTO_USER_TIPO_1     = DATA + 'Autorizaciones/Tipo_1.txt'        # Usuarios del servidor o counter

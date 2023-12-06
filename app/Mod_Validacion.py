@@ -50,17 +50,23 @@ def Validar_Acceso(access_code, tipo_acceso, medio_acceso, lectora):
 
 
 def Validar_QR_Antiguo(access_data, tipo_acceso, medio_acceso, lectora):
-    Respaldo_Online({
-        "access_type": tipo_acceso,
-        "access_medium": medio_acceso,
-        "data": "<" + ".".join(access_data) + ">",
-        "old_qr_code": True
-    }, lectora)
+    print access_data
+    if tipo_acceso == 9:
+        #print 'dando respuesta a loker'
+        Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora)
+    else:
+        Respaldo_Online({
+            "access_type": tipo_acceso,
+            "access_medium": medio_acceso,
+            "data": "<" + ".".join(access_data) + ">",
+            "old_qr_code": True
+        }, lectora)
 
 def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
-    print access_data
+    #print access_data
+
     #print medio_acceso
-    Lokers = Get_File_Json(os.path.join(S0, NEW_TAB_USER_TIPO_9))
+    #Lokers = Get_File_Json(os.path.join(S0, NEW_TAB_USER_TIPO_9))
     #print Lokers
     Estados = Get_File_Json( os.path.join(S0, NEW_TAB_STATUS_TIPO_9) )
     #print Estados
@@ -68,66 +74,78 @@ def Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora):
 
     B_estado=0
     try:
-        #print access_data[3]
-        #print Lokers[str(access_data[3])]
-        open_loker_retiro = Estados[str(access_data[3])]
-        print open_loker_retiro
-        #Estados = Status_Lokers[str(Loker)]
-        Numero_Loker = open_loker_retiro[0]
-        Status_Loker = open_loker_retiro[1]
-        if Status_Loker == 1:
-            print Status_Loker, Numero_Loker
-            print Estados[str(access_data[3])][1]
-            Estados[str(access_data[3])][1] = 0
-            print Estados[str(access_data[3])][1]
-            #Status_Lokers[str(Loker)][1]=1
-            B_estado=1
-            comand_res = [
-                COM_RES,
-                COM_RES_S1,
-                COM_RES_S2
-            ]
-            Set_File(os.path.join(FIRM, HUB, comand_res[Numero_Loker]), "Access granted-E")
-            #guardar registro para enviar
-            print os.path.join(S0, NEW_TAB_Set_server_TIPO_9 )
-            data_add = access_data[0] + '.' + access_data[1] + '.' + access_data[2] + '.' + access_data[3] + '.'+ str(int(time.time()*1000.0))+'.'+'0.1\n'
-            print data_add
-            Add_File(os.path.join(S0, NEW_TAB_Set_server_TIPO_9 ), data_add)
+        if str(access_data[1]) != 'sos':
+            #print Lokers[str(access_data[3])]
+            open_loker_retiro = Estados[str(access_data[3])]
+            #print open_loker_retiro
+            #Estados = Status_Lokers[str(Loker)]
+            Numero_Loker = open_loker_retiro[0]
+            Status_Loker = open_loker_retiro[1]
+            if Status_Loker == 1 or Status_Loker == 2:
+                #print Status_Loker, Numero_Loker
+                #print Estados[str(access_data[3])][1]
+                Estados[str(access_data[3])][1] = 0
+                #print Estados[str(access_data[3])][1]
+                #Status_Lokers[str(Loker)][1]=1
+                B_estado=1
+                comand_res = [
+                    COM_RES,
+                    COM_RES_S1,
+                    COM_RES_S2
+                ]
+                Set_File(os.path.join(FIRM, HUB, comand_res[Numero_Loker]), "Access granted-S") # para dos puertas en el locker
+                #guardar registro para enviar
+                print "Access granted-S"
+                #print os.path.join(S0, NEW_TAB_Set_server_TIPO_9 )
+                data_add = access_data[0] + '.' + access_data[1] + '.' + access_data[2] + '.' + access_data[3] + '.'+ str(int(time.time()*1000.0))+'.'+'0.1\n'
+                #print data_add
+                Add_File(os.path.join(S0, NEW_TAB_Set_server_TIPO_9 ), data_add)
+        elif str(access_data[1]) == 'sos':
+
+            open_loker_retiro = Estados[str(access_data[4])]
+            #print open_loker_retiro
+            #Estados = Status_Lokers[str(Loker)]
+            Numero_Loker = open_loker_retiro[0]
+            Status_Loker = open_loker_retiro[1]
+            #print Status_Loker, Numero_Loker
+
+            if Status_Loker == 1:
+                print 'SOS open'
+                #print Status_Loker, Numero_Loker
+                #print Estados[str(access_data[4])][1]
+                Estados[str(access_data[4])][1] = 2
+                #print Estados[str(access_data[4])][1]
+                #Status_Lokers[str(Loker)][1]=1
+                B_estado=1
+                comand_res = [
+                    COM_RES,
+                    COM_RES_S1,
+                    COM_RES_S2
+                ]
+                Set_File(os.path.join(FIRM, HUB, comand_res[Numero_Loker]), "Access granted-S") # para dos puertas en el locker
+                #guardar registro para enviar
+                #print os.path.join(S0, NEW_TAB_Set_server_TIPO_9 )
+                data_add = '.'.join(access_data)+'.'+ str(int(time.time()*1000.0))+'.'+'0.1\n'
+                print data_add
+                Add_File(os.path.join(S0, NEW_TAB_Set_server_TIPO_9 ), data_add)
+
+
 
     except Exception as e:
         print 'NO existe en los estados'
 
     if B_estado== 1:
-        print 'actualizar lokers'
+        #print 'actualizar lokers'
         Set_File_Json( os.path.join(S0, NEW_TAB_STATUS_TIPO_9), Estados)
-        
 
 
 
 
 
 
-    """
-    Lokersd = Lokers.split('\n')
-    for Loker in Lokersd:
-        if len(Loker)>=3:
-            Data_Loker= Loker.split('.')
-            if access_data[3] == Data_Loker[0]:
-                #print 'Iguales'
-                #print Data_Loker[0]
-                #print Data_Loker[2]
-                if Data_Loker[2] == '0':
 
-                    comand_res = [
-                        COM_RES,
-                        COM_RES_S1,
-                        COM_RES_S2
-                    ]
-                    # Envio modulo respuesta
-                    #Set_File(os.path.join(FIRM, HUB, comand_res[lectora]), "Access granted-E")
-                    # cambio de estado
-                    break
-    """
+
+
 
 
 def Validar_QR(access_code, tipo_acceso, lectora):

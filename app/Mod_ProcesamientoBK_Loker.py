@@ -15,28 +15,25 @@ def Filtro_Tipos_QR_Antiguo(access_code, medio_acceso=1, lectora=0):
     for access_text in access_list:
         access_data = access_text.split(".")
         tipo_acceso = False
+
         #Tipo 9. loker
-        if len(access_data) == 4:
+        if (len(access_data) == 4 or len(access_data) == 5 ) and access_data[0] == "9":
+            #print access_data
             tipo_acceso = 9
-
         # Tipo 1 0 2 o 5: LLave de acceso o Reserva general con QR o Llave empleado
-        if len(access_data) == 2:
+        elif len(access_data) == 2:
             tipo_acceso = 1
-
         # Tipo 3: Invitacion de unico uso
         elif len(access_data) == 5 and access_data[0] == "3":
             tipo_acceso = 3
-
         # Tipo 4: Invitacion de multipes uso
         elif len(access_data) == 5:
             tipo_acceso = 4
+
         if tipo_acceso:
-            if tipo_acceso == 9:
-                #print 'dando respuesta a loker'
-                Validar_QR_Loker(access_data, tipo_acceso, medio_acceso, lectora)
-            else:
-                Validar_QR_Antiguo(
-                    access_data, tipo_acceso, medio_acceso, lectora)
+            #print tipo_acceso
+            Validar_QR_Antiguo(
+                access_data, tipo_acceso, medio_acceso, lectora)
         else:
             Respaldo_Online({
                 "access_medium": medio_acceso,
@@ -46,12 +43,12 @@ def Filtro_Tipos_QR_Antiguo(access_code, medio_acceso=1, lectora=0):
             }, lectora)
             break
 
-
 def Filtro_Tipos_Acceso(access_code, medio_acceso, lectora):
     tipo_acceso = None
     try:
         # Validaciones QR Antiguo
         if re.search("<(.*?)>", access_code):
+            #print access_code
             Filtro_Tipos_QR_Antiguo(access_code, medio_acceso, lectora)
             return True
 
@@ -88,30 +85,25 @@ def Filtro_Tipos_Acceso(access_code, medio_acceso, lectora):
             "reader": lectora
         }, lectora)
 
-
 def Recibir_Codigo_Accesso():
-
     # Medio de acceso 1:QR
     qr_read_paths = [
         (STATUS_QR, COM_QR),
         (STATUS_QR_S1, COM_QR_S1),
         (STATUS_QR_S2, COM_QR_S2)
     ]
-
     # Medio de acceso 2:PIN
     keyboard_read_paths = [
         (STATUS_TECLADO, COM_TECLADO),
         (STATUS_TECLADO_S1, COM_TECLADO_S1),
         (STATUS_TECLADO_S2, COM_TECLADO_S2)
     ]
-
     # Medio de acceso 5-11:NFC
     nfc_read_paths = [
         (STATUS_NFC, COM_NFC),
         (STATUS_NFC_S1, COM_NFC_S1),
         (STATUS_NFC_S2, COM_NFC_S2)
     ]
-
     read_paths = {}
     if "Lectura_QR" in Configs and str(Configs["Lectura_QR"]).lower() == "true":
         read_paths["1"] = qr_read_paths
@@ -126,7 +118,6 @@ def Recibir_Codigo_Accesso():
                 Create_Thread_Daemon(Filtro_Tipos_Acceso,
                                      Get_File(os.path.join(FIRM, HUB, command)), int(medium), lectora)
                 Clear_File(os.path.join(FIRM, HUB, status))
-
 
 while True:
     sleep_time = 0.5 if not "Time_Sleep_Mod" in Configs else float(
