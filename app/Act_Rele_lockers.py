@@ -18,7 +18,7 @@ from lib.Lib_Threads import *  # importar con los mismos nombres
 #                       CONTANTES
 #-----------------------------------------------------------
 
-PN_Mensajes_AR = 0     # 0: NO print  1: Print
+PN_Mensajes_AR = 1     # 0: NO print  1: Print
 #            Entrada, Salida de los relevos
 # puerta 0 : [37,38]
 # puerta 1 : [35,36]
