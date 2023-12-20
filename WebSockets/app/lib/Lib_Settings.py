@@ -3,6 +3,12 @@ import os
 
 CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
+def Set_Rele(text,s_number="S0"):
+    file = open(CURRENT_DIR_PATH+"/../../../db/HUB/Command/Rele/Com_Rele_"+s_number+".txt","w")
+    file.write(text)
+    file.close()
+    #return data["HUB"]["Ser_Dominio"], data["HUB"]["Ser_Ip"], data["HUB"]["Mejor_Coneccion"]
+
 
 def Get_Pat_Server():
     file = open(CURRENT_DIR_PATH+"/../../../db/HUB/Config/Config.json")
