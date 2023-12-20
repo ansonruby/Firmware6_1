@@ -34,7 +34,8 @@ from serial import SerialException
 #---------------------------------
 
 import sys
-sys.path.append('.')
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(dir_path)
 from Lib_File import *  # importar con los mismos nombres
 from Lib_Rout import *  # importar con los mismos nombres
 
