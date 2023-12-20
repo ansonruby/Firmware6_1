@@ -32,6 +32,8 @@ from datetime import timedelta
 #                                   Librerias personale
 #---------------------------------------------------------------------------------------
 
+import sys
+sys.path.append('.')
 from Lib_File import *                              # importar con los mismos nombres
 from Lib_Rout import *                              # importar con los mismos nombres
 from Lib_Encryp import *                            # importar con los mismos nombres

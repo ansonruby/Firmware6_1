@@ -30,6 +30,8 @@ from threading import Thread
 #           Librerias personales
 #---------------------------------
 
+import sys
+sys.path.append('.')
 from Lib_File import *            # importar con los mismos nombres
 from Lib_Rout import *            # importar con los mismos nombres
 
