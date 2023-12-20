@@ -4,9 +4,9 @@
         "Vercion": "2023.08.03.0"
     },
     "HUB": {
-        "Mejor_Coneccion": "1011",
+        "Mejor_Coneccion": "1001",
         "Ser_Dominio": "solutions.fusepong.com",
-        "Ser_Ip": "solutions.fusepong.com",
+        "Ser_Ip": "",
         "Zona": "America/Bogota"
     },
     "Lectoras": [
