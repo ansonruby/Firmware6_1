@@ -90,7 +90,7 @@ class ACTUADOR_RELES(object):
         #if Direc == 0:      Set_File(Puerta+COM_TX_RELE,"¿00000004000" + str(Tiempo_Rele) + "?") #Entrar
         #elif Direc == 1:    Set_File(Puerta+COM_TX_RELE,"¿00000004010" + str(Tiempo_Rele) + "?") #Salir
         #elif Direc == 2:    Set_File(Puerta+COM_TX_RELE,"¿000000040300?")
-        print 'modificar para comunicacion serial'
+        print('modificar para comunicacion serial')
     #-----------------------------------------------------------
     def Entrar(self):
 
@@ -126,7 +126,7 @@ class ACTUADOR_RELES(object):
             Comando = Get_File(self.Salida_COM_RELE)
             if Comando != '':
                 Clear_File(self.Salida_COM_RELE)
-                if PN_Mensajes_AR : print self.Sede,': ',Comando
+                if PN_Mensajes_AR : print(self.Sede,': ',Comando)
                 self.Direcion_Rele(Comando)
     #-----------------------------------------------------------
     def Inicio_Rele(self):
@@ -141,15 +141,15 @@ class ACTUADOR_RELES(object):
 #-----------------------------------------------------------
 VECTOR_RELES    = []
 data = Get_Salidas()
-print 'Hilos start'
+print('Hilos start')
 for Salida_Rele in data:
     try:
-        if PN_Mensajes_AR : print Salida_Rele['Puerto'], Salida_Rele['Locacion'], Salida_Rele['Tiempo'], Salida_Rele['Direccion'], Salida_Rele['Tipo']
+        if PN_Mensajes_AR : print(Salida_Rele['Puerto'], Salida_Rele['Locacion'], Salida_Rele['Tiempo'], Salida_Rele['Direccion'], Salida_Rele['Tipo'])
         VECTOR_RELES.append(ACTUADOR_RELES (Salida_Rele['Puerto'], Salida_Rele['Locacion'], Salida_Rele['Tiempo'], Salida_Rele['Direccion'], Salida_Rele['Tipo'] ))
     except:
-        if PN_Mensajes_AR : print 'Key Error no definidas'
+        if PN_Mensajes_AR : print('Key Error no definidas')
 for Salida_Rele in VECTOR_RELES:
-    if PN_Mensajes_AR : print 'Inicio Rele',Salida_Rele.Sede
+    if PN_Mensajes_AR : print('Inicio Rele',Salida_Rele.Sede)
     Salida_Rele.Inicio_Rele()
 
 
