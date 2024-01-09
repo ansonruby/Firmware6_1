@@ -35,7 +35,7 @@ class WebSocketFuseaccess():
             self.connection = None
 
     def send_message(self, action, data):
-        if self.connection and self.subscription and self.connected:
+        if self.connection.connected and self.subscription:
             message = Message(action=action, data=data)
             self.subscription.send(message)
             return True
