@@ -28,13 +28,12 @@ ws = WSSpeaker()
 next_reconection_time = time.time() + int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
 ws.create_connection()
 while True:
-    try:
-        ws.send_message("check_connection", {})
-    except Exception as e:
-        ws.close_connection()
-        ws.create_connection()
     time.sleep(1)
     if ws.connection and ws.subscription:
+        try:
+            ws.send_message("check_connection", {})
+        except Exception as e:
+            ws.close_connection()
         time_now = time.time()
         if time_now > next_reconection_time:
             ws.close_connection()
