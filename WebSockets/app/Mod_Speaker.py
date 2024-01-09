@@ -37,6 +37,7 @@ while True:
         ws.send_message("check_connection", {})
     except Exception as e:
         ws.close_connection()
+        ws.create_connection()
     time.sleep(1)
     if ws.connection and ws.subscription:
         time_now = time.time()
