@@ -33,7 +33,7 @@ next_reconection_time = time.time() + int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
 while True:
     try:
         time.sleep(5)
-        if ws.connection.connected and ws.subscription:
+        if ws.connection and ws.connection.connected and ws.subscription:
             time_now = time.time()
             if time_now > next_reconection_time:
                 ws.close_connection()
