@@ -33,7 +33,7 @@ next_reconection_time = time.time() + int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
 ws.create_connection()
 while True:
     time.sleep(1)
-    if ws.connection and ws.subscription:
+    if ws.connection and ws.subscription and ws.connected:
         try:
             ws.send_message("check_connection", {})
         except Exception as e:
