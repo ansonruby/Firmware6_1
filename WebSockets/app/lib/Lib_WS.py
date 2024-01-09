@@ -12,6 +12,8 @@ class WebSocketFuseaccess():
         ws_url = url.replace("http", "ws", 1) + "/cable"
         self.ws_url = ws_url
         self.uuid = Get_ID_Dispositivo()
+        self.connection = None
+        self.subscription = None
 
     def create_connection(self):
         connection = Connection(url=self.ws_url)
