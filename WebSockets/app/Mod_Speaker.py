@@ -18,14 +18,25 @@ class WSSpeaker(WebSocketFuseaccess):
         language = 'es'
         tld = 'com.mx'
         myobj = gTTS(text=mytext, lang=language, tld=tld, slow=False)
-        tmp_path = CURRENT_DIR_PATH+"/tmp"
+        tmp_path = CURRENT_DIR_PATH + "/tmp"
         if not os.path.exists(tmp_path):
             os.makedirs(tmp_path)
-        file_name = tmp_path+"/voz_"+str(int(time.time()*1000))+".mp3"
+        file_name = tmp_path + "/voz_" + str(int(time.time() * 1000)) + ".mp3"
         myobj.save(file_name)
         subprocess.call(["cvlc", "--play-and-exit", file_name],
                         stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
         os.remove(file_name)
+
+    def close_connection(self):
+        if self.connection and self.subscription:
+            self.subscription.remove()
+            self.connection.disconnect()
+            self.subscription = None
+            self.connection = None
+        try:
+            self.create_connection()
+        except Exception as e:
+            pass
 
 
 ws = WSSpeaker()
@@ -33,4 +44,6 @@ ws = WSSpeaker()
 while True:
     ws.create_connection()
     time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
-    ws.close_connection()
+
+    if ws.connection and ws.subscription:
+        ws.close_connection()
