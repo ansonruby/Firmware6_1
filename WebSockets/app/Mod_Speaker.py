@@ -43,7 +43,8 @@ ws = WSSpeaker()
 
 while True:
     ws.create_connection()
-    time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
-
     if ws.connection and ws.subscription:
+        time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
         ws.close_connection()
+    else:
+        time.sleep(0.5)
