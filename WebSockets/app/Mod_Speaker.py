@@ -33,17 +33,22 @@ class WSSpeaker(WebSocketFuseaccess):
             self.connection.disconnect()
             self.subscription = None
             self.connection = None
-        try:
-            self.create_connection()
-        except Exception as e:
-            pass
+        # try:
+        #     self.create_connection()
+        # except Exception as e:
+        #     pass
 
 
 ws = WSSpeaker()
-
+next_reconection_time = time.time() + int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
+ws.create_connection()
 while True:
-    ws.create_connection()
     time.sleep(0.5)
     if ws.connection and ws.subscription:
-        time.sleep(int(CONFIG_SPEAKER["Tiempo_Reset_WS"]))
-        ws.close_connection()
+        time_now = time.time()
+        if time_now > next_reconection_time:
+            ws.close_connection()
+            next_reconection_time = time_now + \
+                int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
+    else:
+        ws.create_connection()
