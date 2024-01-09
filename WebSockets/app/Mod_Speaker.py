@@ -27,16 +27,6 @@ class WSSpeaker(WebSocketFuseaccess):
                         stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
         os.remove(file_name)
 
-    def close_connection(self):
-        if self.connection and self.subscription:
-            self.subscription.remove()
-            self.connection.disconnect()
-            self.subscription = None
-            self.connection = None
-        # try:
-        #     self.create_connection()
-        # except Exception as e:
-        #     pass
 
 
 ws = WSSpeaker()
