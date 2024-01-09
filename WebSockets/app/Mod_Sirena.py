@@ -26,14 +26,16 @@ class WSSpeaker(WebSocketFuseaccess):
 
 ws = WSSpeaker()
 next_reconection_time = time.time() + int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
-ws.create_connection()
 while True:
-    time.sleep(5)
-    if ws.connection.connected and ws.subscription:
-        time_now = time.time()
-        if time_now > next_reconection_time:
-            ws.close_connection()
-            next_reconection_time = time_now + \
-                int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
-    else:
-        ws.create_connection()
+    try:
+        time.sleep(5)
+        if ws.connection.connected and ws.subscription:
+            time_now = time.time()
+            if time_now > next_reconection_time:
+                ws.close_connection()
+                next_reconection_time = time_now + \
+                    int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
+        else:
+            ws.create_connection()
+    except Exception as e:
+        print(e)
