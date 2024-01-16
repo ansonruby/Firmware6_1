@@ -1,0 +1,16 @@
+syntax="proto3";
+
+option go_package="./proto";
+
+package sirena_service;
+
+service SirenaService{
+    rpc SendEvents(Chanel) returns (stream Event) {};
+}
+
+message Chanel{
+    string uuid=1;
+}
+message Event{
+    uint32 priority =1;
+}
