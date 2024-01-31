@@ -11,10 +11,10 @@ import sirena_pb2_grpc
 async def run():
     uuid=Get_ID_Dispositivo()
     channel_options = [
-        ("grpc.keepalive_time_ms", 15000),
-        ("grpc.keepalive_timeout_ms", 10000),
+        ("grpc.keepalive_time_ms", 60000),
+        ("grpc.keepalive_timeout_ms", 50000),
         ("grpc.keepalive_permit_without_calls", 1),
-        ("grpc.http2.max_pings_without_data", 4),
+        ("grpc.http2.max_pings_without_data", 5),
     ]
     while True:
         async with grpc.aio.secure_channel(
