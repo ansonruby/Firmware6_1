@@ -16,7 +16,7 @@ class SirenaServiceStub(object):
         """
         self.SendEvents = channel.unary_stream(
                 '/sirena_service.SirenaService/SendEvents',
-                request_serializer=sirena__pb2.Chanel.SerializeToString,
+                request_serializer=sirena__pb2.Channel.SerializeToString,
                 response_deserializer=sirena__pb2.Event.FromString,
                 )
 
@@ -35,7 +35,7 @@ def add_SirenaServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SendEvents': grpc.unary_stream_rpc_method_handler(
                     servicer.SendEvents,
-                    request_deserializer=sirena__pb2.Chanel.FromString,
+                    request_deserializer=sirena__pb2.Channel.FromString,
                     response_serializer=sirena__pb2.Event.SerializeToString,
             ),
     }
@@ -60,7 +60,7 @@ class SirenaService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/sirena_service.SirenaService/SendEvents',
-            sirena__pb2.Chanel.SerializeToString,
+            sirena__pb2.Channel.SerializeToString,
             sirena__pb2.Event.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

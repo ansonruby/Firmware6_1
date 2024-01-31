@@ -1,4 +1,7 @@
 import setup
+from lib.Lib_Settings import Set_Rele
+from lib.Fun_Dispositivo import Get_ID_Dispositivo
+import time
 import asyncio
 import grpc
 import sirena_pb2
@@ -6,27 +9,36 @@ import sirena_pb2_grpc
 
 
 async def run():
-    async with grpc.aio.insecure_channel("192.168.0.51:3000") as channel:
-        stub = sirena_pb2_grpc.SirenaServiceStub(channel)
+    uuid=Get_ID_Dispositivo()
+    channel_options = [
+        ("grpc.keepalive_time_ms", 15000),
+        ("grpc.keepalive_timeout_ms", 10000),
+        ("grpc.keepalive_permit_without_calls", 1),
+        ("grpc.http2.max_pings_without_data", 4),
+    ]
+    while True:
+        async with grpc.aio.secure_channel(
+            "communication.fusepong.com",
+            grpc.ssl_channel_credentials(),
+            options=channel_options
+        ) as channel:
 
-        async for response in stub.SirenaService(
-            sirena_pb2_grpc.Chanel(uuid="1234")
-        ):
-            print(
-                "Greeter client received from async generator: "
-                + response.message
-            )
+            while True:
+                time.sleep(0.1)
+                asyncio.sleep(0.1)
+                try:
+                    stub = sirena_pb2_grpc.SirenaServiceStub(channel)
 
-        while True:
-            response = await hello_stream.read()
-            if response == grpc.aio.EOF:
-                break
-            print(
-                "Greeter client received from direct read: " + response.message
-            )
+                    async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
+                        prio = 1
+                        if response.priority and response.priority > 0:
+                            prio = response.priority
+                        for _ in range(int(prio)):
+                            Set_Rele('Access granted-E')
+                            time.sleep(1)
+                except Exception as e:
+                    print(e)
 
 
 if __name__ == "__main__":
-    # asyncio.run(run())
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(run())
+    asyncio.run(run())
