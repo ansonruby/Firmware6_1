@@ -3,3 +3,4 @@
 __pycache__/
 BK/
 .vscode/
+gRPC/lib/python3.9/site-packages/grpc*
