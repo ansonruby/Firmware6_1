@@ -40,6 +40,7 @@ while True:
                 next_reconection_time = time_now + \
                     int(CONFIG_SPEAKER["Tiempo_Reset_WS"])
         else:
+            ws.close_connection()
             ws.create_connection()
             time.sleep(15)
     except Exception as e:
