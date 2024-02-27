@@ -17,7 +17,7 @@ CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 def speak(text):
     language = 'es'
     tld = 'com.mx'
-    myobj = gTTS(text=text, lang=language, tld=tld, slow=False)
+    myobj = gTTS(text=text, lang=language, tld=tld, slow=False,lang_check=False)
     tmp_path = CURRENT_DIR_PATH + "/tmp"
     if not os.path.exists(tmp_path):
         os.makedirs(tmp_path)
