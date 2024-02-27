@@ -37,6 +37,7 @@ class WSSpeaker(WebSocketFuseaccess):
             return
         
         speak_thread = Thread(target=speak, args=(text,))
+        speak_thread.daemon = True
         speak_thread.start()
 
 
