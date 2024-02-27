@@ -24,7 +24,7 @@ def speak(msg):
         os.makedirs(tmp_path)
     file_name = tmp_path + "/voz_" + str(int(time.time() * 1000)) + ".mp3"
     myobj.save(file_name)
-    subprocess.call(["cvlc", "--play-and-exit", file_name],
+    subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
                     stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
     os.remove(file_name)
 
