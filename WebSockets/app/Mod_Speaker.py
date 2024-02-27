@@ -14,11 +14,10 @@ if not "Tiempo_Reset_WS" in CONFIG_SPEAKER:
 CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-def speak(msg):
-    mytext = msg['message']
+def speak(text):
     language = 'es'
     tld = 'com.mx'
-    myobj = gTTS(text=mytext, lang=language, tld=tld, slow=False)
+    myobj = gTTS(text=text, lang=language, tld=tld, slow=False)
     tmp_path = CURRENT_DIR_PATH + "/tmp"
     if not os.path.exists(tmp_path):
         os.makedirs(tmp_path)
@@ -30,10 +29,15 @@ def speak(msg):
 
 
 class WSSpeaker(WebSocketFuseaccess):
+    speak_thread = Thread(args=("",))
+
     def on_message(self, msg):
-        T = Thread(target=speak, args=(msg,))
-        T.daemon = True
-        T.start()
+        text = msg['message']
+        if speak_thread.is_alive() and text != speak_thread._Thread__arg[0]:
+            return
+        
+        speak_thread = Thread(target=speak, args=(text,))
+        speak_thread.start()
 
 
 ws = WSSpeaker()
