@@ -33,9 +33,9 @@ class WSSpeaker(WebSocketFuseaccess):
 
     def on_message(self, msg):
         text = msg['message']
-        if self.send_messagespeak_thread.is_alive() and text != self.speak_thread._Thread__arg[0]:
+        if self.speak_thread and self.speak_thread.is_alive() and text != self.speak_thread._Thread__arg[0]:
             return
-
+        
         self.speak_thread = Thread(target=speak, args=(text,))
         self.speak_thread.daemon = True
         self.speak_thread.start()
