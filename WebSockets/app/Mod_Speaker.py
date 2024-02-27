@@ -32,7 +32,7 @@ def speak(msg):
 class WSSpeaker(WebSocketFuseaccess):
     def on_message(self, msg):
         T = Thread(target=speak, args=(msg,))
-        T.setDaemon(True)
+        T.daemon = True
         T.start()
 
 
