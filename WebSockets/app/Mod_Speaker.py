@@ -37,6 +37,7 @@ class WSSpeaker(WebSocketFuseaccess):
         if len(self.speak_threads) > 0:
             speak_thread = self.speak_threads.pop()
             if speak_thread and speak_thread.is_alive():
+                print(speak_thread._Thread__arg[0])
                 if text != speak_thread._Thread__arg[0]:
                     self.speak_threads.append(speak_thread)
                     return
