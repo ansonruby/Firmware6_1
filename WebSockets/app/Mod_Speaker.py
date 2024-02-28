@@ -50,7 +50,7 @@ class WSSpeaker(WebSocketFuseaccess):
                 if text == speak_thread.text:
                     self.speak_threads.append(speak_thread)
                     return
-                time.sleep(1)
+                time.sleep(0.5)
 
         new_speak_thread = SpeakThread(text)
         new_speak_thread.daemon = True
