@@ -36,6 +36,7 @@ class WSSpeaker(WebSocketFuseaccess):
         text = msg['message']
         speak_thread = self.speak_threads.pop()
         if speak_thread and speak_thread.is_alive() and text != speak_thread._Thread__arg[0]:
+            self.speak_threads.append(speak_thread)
             return
 
         new_speak_thread = Thread(target=speak, args=(text,))
