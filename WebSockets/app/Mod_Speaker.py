@@ -17,7 +17,8 @@ CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 def speak(text):
     language = 'es'
     tld = 'com.mx'
-    myobj = gTTS(text=text, lang=language, tld=tld, slow=False,lang_check=False)
+    myobj = gTTS(text=text, lang=language, tld=tld,
+                 slow=False, lang_check=False)
     tmp_path = CURRENT_DIR_PATH + "/tmp"
     if not os.path.exists(tmp_path):
         os.makedirs(tmp_path)
@@ -29,16 +30,18 @@ def speak(text):
 
 
 class WSSpeaker(WebSocketFuseaccess):
-    speak_thread = Thread(args=("",))
+    speak_threads = [Thread(args=("",))]
 
     def on_message(self, msg):
         text = msg['message']
-        if self.speak_thread and self.speak_thread.is_alive() and text != self.speak_thread._Thread__arg[0]:
+        speak_thread = self.speak_threads.pop()
+        if speak_thread and speak_thread.is_alive() and text != speak_thread._Thread__arg[0]:
             return
-        
-        self.speak_thread = Thread(target=speak, args=(text,))
-        self.speak_thread.daemon = True
-        self.speak_thread.start()
+
+        new_speak_thread = Thread(target=speak, args=(text,))
+        new_speak_thread.daemon = True
+        new_speak_thread.start()
+        self.speak_threads.append(new_speak_thread)
 
 
 ws = WSSpeaker()
