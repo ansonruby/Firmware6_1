@@ -33,7 +33,7 @@ class SpeakThread(Thread):
                 for _ in range(int(self.prio)):
                     subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
                                     stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
-                    time.sleep(1)
+                    # time.sleep(1)
 
             return
 
