@@ -17,19 +17,31 @@ CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 class SpeakThread(Thread):
     text = ""
 
-    def __init__(self, text):
+    def __init__(self, text, priority):
         Thread.__init__(self)
         self.text = text
+        self.prio = priority
 
     def run(self):
+        tmp_path = CURRENT_DIR_PATH + "/tmp"
+        if not os.path.exists(tmp_path):
+            os.makedirs(tmp_path)
+
+        if self.text == "!sirena":
+            file_name = tmp_path + "/Sirena.mp3"
+            if os.path.exists(tmp_path):
+                for _ in range(int(self.prio / 2)):
+                    subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
+                                    stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
+                    time.sleep(1)
+
+            return
+
+        file_name = tmp_path + "/voz_" + str(int(time.time() * 1000)) + ".mp3"
         language = 'es'
         tld = 'com.mx'
         myobj = gTTS(text=self.text, lang=language, tld=tld,
                      slow=False, lang_check=False)
-        tmp_path = CURRENT_DIR_PATH + "/tmp"
-        if not os.path.exists(tmp_path):
-            os.makedirs(tmp_path)
-        file_name = tmp_path + "/voz_" + str(int(time.time() * 1000)) + ".mp3"
         myobj.save(file_name)
         subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
                         stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
@@ -41,16 +53,17 @@ class WSSpeaker(WebSocketFuseaccess):
 
     def on_message(self, msg):
         text = msg['message']
+        prio = int(msg['priority'])
         if len(self.speak_threads) > 0:
             speak_thread = self.speak_threads.pop()
             if speak_thread and speak_thread.is_alive():
                 if text == speak_thread.text:
                     self.speak_threads.append(speak_thread)
                     return
-                
+
                 time.sleep(0.5)
 
-        new_speak_thread = SpeakThread(text)
+        new_speak_thread = SpeakThread(text, prio)
         new_speak_thread.daemon = True
         new_speak_thread.start()
         self.speak_threads.append(new_speak_thread)
