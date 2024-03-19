@@ -30,7 +30,7 @@ class SpeakThread(Thread):
         if self.text == "!sirena":
             file_name = tmp_path + "/Sirena.mp3"
             if os.path.exists(tmp_path):
-                for _ in range(int(self.prio / 2)):
+                for _ in range(int(self.prio)):
                     subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
                                     stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
                     time.sleep(1)
