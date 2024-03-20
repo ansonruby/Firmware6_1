@@ -45,7 +45,7 @@ class SpeakThread(Thread):
     def reproduce_audio(self, name, prio, delete_file):
         repetitions = prio if prio > 0 else 1
 
-        file_name = self.audio_path + name + ".mp3"
+        file_name = self.audio_path + name
         if os.path.exists(self.audio_path):
             for _ in range(repetitions):
                 subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
@@ -65,7 +65,7 @@ class SpeakThread(Thread):
             return self.write_audio_file(audio, text == "¡audio", prio)
 
         if text.startswith("!"):
-            audio_name = text.split("!")[1]
+            audio_name = text.split("!")[1] + ".mp3"
         else:
             delete_file = True
             audio_name = self.write_tts_file(text)
