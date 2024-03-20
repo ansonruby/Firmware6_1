@@ -1,6 +1,7 @@
 import setup
 from lib.Lib_Settings import Set_Rele
 from lib.Fun_Dispositivo import Get_ID_Dispositivo
+from lib.Lib_Speaker import send_speaker_msg
 import time
 import asyncio
 import grpc
@@ -9,7 +10,7 @@ import sirena_pb2_grpc
 
 
 async def run():
-    uuid=Get_ID_Dispositivo()
+    uuid = Get_ID_Dispositivo()
     channel_options = [
         ("grpc.keepalive_time_ms", 60000),
         ("grpc.keepalive_timeout_ms", 50000),
@@ -28,14 +29,14 @@ async def run():
                 asyncio.sleep(0.1)
                 try:
                     stub = sirena_pb2_grpc.SirenaServiceStub(channel)
-
                     async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
-                        prio = 1
-                        if response.priority and response.priority > 0:
-                            prio = response.priority
-                        for _ in range(int(prio)):
-                            Set_Rele('Access granted-E')
-                            time.sleep(1)
+                        send_speaker_msg(
+                            {
+                                "priority": response.priority,
+                                "message": response.message,
+                                "audio": response.audio
+                            }
+                        )
                 except Exception as e:
                     print(e)
 

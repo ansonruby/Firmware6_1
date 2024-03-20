@@ -12,5 +12,7 @@ message Channel{
     string uuid=1;
 }
 message Event{
-    uint32 priority =1;
+    uint32 priority=1;
+    string message=2;
+    bytes audio=3;
 }
