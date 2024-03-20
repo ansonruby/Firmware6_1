@@ -26,7 +26,7 @@ async def run():
 
             while True:
                 time.sleep(0.1)
-                asyncio.sleep(0.1)
+                await asyncio.sleep(0.1)
                 try:
                     stub = sirena_pb2_grpc.SirenaServiceStub(channel)
                     async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
