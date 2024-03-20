@@ -25,7 +25,11 @@ async def get_grpc_stream():
 
         try:
             stub = sirena_pb2_grpc.SirenaServiceStub(channel)
-            async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
+            stream = stub.SendEvents(sirena_pb2.Channel(uuid=uuid))
+            while True:
+                response = await stream.read()
+                if response == grpc.aio.EOF:
+                    break
                 send_speaker_msg(
                     {
                         "priority": response.priority,
@@ -33,6 +37,7 @@ async def get_grpc_stream():
                         "audio": response.audio
                     }
                 )
+
         except Exception as e:
             print(e)
 
