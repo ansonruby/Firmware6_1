@@ -41,6 +41,8 @@ async def run():
                     print(e)
 
     except Exception as e:
+        print(e)
+    finally:
         asyncio.run(run())
 
 
