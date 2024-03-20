@@ -38,8 +38,8 @@ async def get_grpc_stream():
 
 
 async def main():
-    while True:
-        await get_grpc_stream()
+    # while True:
+    await get_grpc_stream()
 
 if __name__ == "__main__":
     while True:
