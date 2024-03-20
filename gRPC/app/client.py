@@ -17,7 +17,7 @@ async def run():
         ("grpc.keepalive_permit_without_calls", 1),
         ("grpc.http2.max_pings_without_data", 5),
     ]
-    while True:
+    try:
         async with grpc.aio.secure_channel(
             "communication.fusepong.com",
             grpc.ssl_channel_credentials(),
@@ -39,6 +39,9 @@ async def run():
                         )
                 except Exception as e:
                     print(e)
+
+    except Exception as e:
+        asyncio.run(run())
 
 
 if __name__ == "__main__":
