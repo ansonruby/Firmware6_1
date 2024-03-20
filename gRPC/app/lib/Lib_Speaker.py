@@ -15,7 +15,7 @@ class SpeakThread(Thread):
         self.msg = msg
         self.audio_path = CURRENT_DIR_PATH + "/audio/"
 
-    def create_audio_folders(self):
+    def create_audio_folder(self):
         if not os.path.exists(self.audio_path):
             os.makedirs(self.audio_path)
 
