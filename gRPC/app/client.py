@@ -23,21 +23,21 @@ async def run():
         options=channel_options
     ) as channel:
 
-        while True:
-            time.sleep(0.1)
-            await asyncio.sleep(0.1)
-            try:
-                stub = sirena_pb2_grpc.SirenaServiceStub(channel)
-                async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
-                    send_speaker_msg(
-                        {
-                            "priority": response.priority,
-                            "message": response.message,
-                            "audio": response.audio
-                        }
-                    )
-            except Exception as e:
-                print(e)
+        # while True:
+        time.sleep(0.1)
+        await asyncio.sleep(0.1)
+        try:
+            stub = sirena_pb2_grpc.SirenaServiceStub(channel)
+            async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
+                send_speaker_msg(
+                    {
+                        "priority": response.priority,
+                        "message": response.message,
+                        "audio": response.audio
+                    }
+                )
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
