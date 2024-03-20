@@ -9,7 +9,7 @@ import sirena_pb2
 import sirena_pb2_grpc
 
 
-async def run():
+async def get_grpc_stream():
     uuid = Get_ID_Dispositivo()
     channel_options = [
         ("grpc.keepalive_time_ms", 60000),
@@ -23,9 +23,6 @@ async def run():
         options=channel_options
     ) as channel:
 
-        # while True:
-        time.sleep(0.1)
-        await asyncio.sleep(0.1)
         try:
             stub = sirena_pb2_grpc.SirenaServiceStub(channel)
             async for response in stub.SendEvents(sirena_pb2.Channel(uuid=uuid)):
@@ -40,7 +37,10 @@ async def run():
             print(e)
 
 
+async def main():
+    while True:
+        await get_grpc_stream()
+
 if __name__ == "__main__":
     while True:
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(run())
+        asyncio.run(main())
