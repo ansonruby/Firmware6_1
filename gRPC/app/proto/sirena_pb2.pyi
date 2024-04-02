@@ -11,7 +11,11 @@ class Channel(_message.Message):
     def __init__(self, uuid: _Optional[str] = ...) -> None: ...
 
 class Event(_message.Message):
-    __slots__ = ("priority",)
+    __slots__ = ("priority", "message", "audio")
     PRIORITY_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    AUDIO_FIELD_NUMBER: _ClassVar[int]
     priority: int
-    def __init__(self, priority: _Optional[int] = ...) -> None: ...
+    message: str
+    audio: bytes
+    def __init__(self, priority: _Optional[int] = ..., message: _Optional[str] = ..., audio: _Optional[bytes] = ...) -> None: ...

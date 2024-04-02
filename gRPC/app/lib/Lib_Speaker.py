@@ -19,18 +19,18 @@ class SpeakThread(Thread):
         if not os.path.exists(self.audio_path):
             os.makedirs(self.audio_path)
 
-    def write_audio_file(self, audio, reset):
-        file_name = self.audio_path + "audio.mp3"
-
+    def write_audio_file(self, name, audio, reset):
+        file_name = self.audio_path + name
+        
         if reset:
-            file = open(file_name, 'wb')
-            file.write(b'')
-            file.close()
+            file_name = self.audio_path + name.split("!")[1]
 
         file = open(file_name, 'ab')
         file.write(audio)
         file.close()
-        return
+
+        if reset:
+            return self.reproduce_audio(self.audio_path + name.split("!")[1], 1, True)
 
     def write_tts_file(self, text):
         audio_name = "voz_" + str(int(time.time() * 1000)) + ".mp3"
@@ -40,12 +40,11 @@ class SpeakThread(Thread):
         myobj = gTTS(text=text, lang=language, tld=tld,
                      slow=False, lang_check=False)
         myobj.save(file_name)
-        return audio_name
+        return file_name
 
-    def reproduce_audio(self, name, prio, delete_file):
+    def reproduce_audio(self, file_name, prio, delete_file):
         repetitions = prio if prio > 0 else 1
 
-        file_name = self.audio_path + name
         if os.path.exists(self.audio_path):
             for _ in range(repetitions):
                 subprocess.call(["cvlc", "--alsa-audio-device", "hw:1,0", "--play-and-exit", file_name],
@@ -62,10 +61,10 @@ class SpeakThread(Thread):
         self.create_audio_folder()
 
         if audio:
-            return self.write_audio_file(audio, text == "¡audio", prio)
+            return self.write_audio_file(text, audio, text.startswith("¡audio!"))
 
         if text.startswith("!"):
-            audio_name = text.split("!")[1] + ".mp3"
+            audio_name = self.audio_path + text.split("!")[1] + ".mp3"
         else:
             delete_file = True
             audio_name = self.write_tts_file(text)
