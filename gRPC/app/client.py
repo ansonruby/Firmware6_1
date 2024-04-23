@@ -38,7 +38,7 @@ async def run():
                             }
                         )
                 except Exception as e:
-                    print(e)
+                    print("error =" + repr(e))
 
 
 if __name__ == "__main__":
